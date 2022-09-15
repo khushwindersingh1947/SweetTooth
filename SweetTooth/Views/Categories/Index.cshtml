@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Category>
+@*The model in line up is telling the view what type of data is being passed in IEnumerable is a type of list*@
+<h1>Categories</h1>
+<ul>
+	@foreach(var c in Model)
+	{
+		<li>
+			<a asp-controller="Categories" asp-action="Browse" asp-route-type=@c.CategoryName>@c.CategoryName</a>
+		</li>
+	}
+</ul>
+@*<ul>
+	<li>
+		<a asp-controller="Categories" asp-action="Browse" asp-route-type="Choco Bars">Choco Bars</a>
+	</li>
+	<li>
+		<a asp-controller="Categories" asp-action="Browse"asp-route-type="Sweet and sour">Sweet and sour</a>
+	</li>
+	<li>
+		<a asp-controller="Categories" asp-action="Browse"asp-route-type="Sprinkled candies">Sprinkled candies</a>
+	</li>
+	<li>
+		<a asp-controller="Categories" asp-action="Browse"asp-route-type="hard candies">hard candies</a>
+	</li>
+	<li>
+		<a asp-controller="Categories" asp-action="Browse"asp-route-type="gummy candies">gummy candies</a>
+	</li>
+</ul>
+*@
