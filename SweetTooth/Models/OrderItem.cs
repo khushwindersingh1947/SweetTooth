@@ -15,5 +15,8 @@ namespace SweetTooth.Models
         [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Price { get; set; }
 
+        // 1 product can be in 1 OrderItem
+        public Product? Product { get; set; }
+
     }
 }

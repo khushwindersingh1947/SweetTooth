@@ -16,5 +16,14 @@ namespace SweetTooth.Models
         public decimal Price { get; set; }
 
         public string? Image { get; set; } //the ? means it can be null
+
+        //1 product is in 1 category
+        public Category? Category { get; set; } 
+
+        //1 product can be in many cartItems
+        public List<CartItem>? CartItems { get; set; }
+
+        //1 product can be in many orderItems
+        public List<OrderItem>? OrderItems { get; set; }
     }
 }

@@ -37,5 +37,8 @@ namespace SweetTooth.Models
 
         [Required]
         public string LastName { get; set; }
+
+        //1 order contains many orderItems
+        public List<OrderItem>? OrderItems { get; set; }
     }
 }
