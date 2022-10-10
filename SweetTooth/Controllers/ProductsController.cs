@@ -22,7 +22,7 @@ namespace SweetTooth.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Products.Include(p => p.Category).OrderBy(p => p.Name);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,16 +57,40 @@ namespace SweetTooth.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Price,Image,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,Name,Price,CategoryId")] Product product,IFormFile? Image)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null) {
+                    var fileName = UploadImage(Image);
+                    product.Image = fileName;
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
             return View(product);
+        }
+
+        private static string UploadImage(IFormFile Image) {
+            //get temp location of the uploaded file
+            var filePath = Path.GetTempFileName();
+
+            //create a unique name to prevent overwrites using Globally Unique ID class
+            //photo.jpg => asd134-photo.jpg
+            var fileName = Guid.NewGuid().ToString() + "-" + Image.FileName;
+
+            //where to store the image.  For example "\wwwroot\img\products\a134d-smarties.jpg"
+            var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\products\\" + fileName;
+
+            //copy the file to the target directory
+            using (var stream = new FileStream(uploadPath, FileMode.Create))
+            {
+                Image.CopyTo(stream);
+            }
+            return fileName;
+
         }
 
         // GET: Products/Edit/5
