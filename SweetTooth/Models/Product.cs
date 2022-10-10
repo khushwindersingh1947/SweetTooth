@@ -18,6 +18,8 @@ namespace SweetTooth.Models
         public string? Image { get; set; } //the ? means it can be null
 
         //1 product is in 1 category
+        [Required]
+        public int CategoryId { get; set; }
         public Category? Category { get; set; } 
 
         //1 product can be in many cartItems
