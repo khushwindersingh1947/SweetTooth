@@ -12,7 +12,7 @@ using SweetTooth.Models;
 namespace SweetTooth.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    
+
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

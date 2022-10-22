@@ -1,0 +1,16 @@
+﻿@model IEnumerable<SweetTooth.Models.Category>
+
+<h1>Shop by Category</h1>
+<section class="row card-group">
+	@foreach(var category in Model)
+	{
+		<div class="col-sm-6 col-lg-4 mb-3">
+			<div class="card mb-4 text-center h-100">
+				<div class="card-body">
+					@category.Name
+				</div>
+			</div>
+		</div>
+	}
+</section>
+
