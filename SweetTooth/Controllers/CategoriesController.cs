@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,12 @@ using SweetTooth.Models;
 
 namespace SweetTooth.Controllers
 {
+    [Authorize(Roles = "Administrator")]
+    
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        
         public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
@@ -26,6 +29,7 @@ namespace SweetTooth.Controllers
         }
 
         // GET: Categories/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Categories == null)
