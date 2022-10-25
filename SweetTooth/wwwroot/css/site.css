@@ -67,10 +67,20 @@
     --bs-highlight-bg: #fdfad3;
 }
 
-
-html {
-  font-size: 14px;
+html,
+body {
+    margin: 0;
+    padding: 0;
 }
+
+/* use viewport-relative units to cover page fully */
+body {
+    height: 100vh;
+    width: 100vw;
+    display:flex;
+    flex-direction:column;
+}
+
 
 .nav-link{
     color: #eb6864;
@@ -82,14 +92,8 @@ html {
   }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
 
-body {
-  margin-bottom: 60px;
-}
+
 .price {
     text-align: right;
     width: 100px
@@ -100,4 +104,17 @@ body {
     border-radius: 15px;
     background: #f7f7f7;
     padding: 5px;
+}
+.home-img {
+    border-radius:2rem;
+}
+footer {
+    flex: 0 1 2rem;
+}
+    footer .container {
+        padding:1rem;
+    }
+main {
+    flex: 1 1 auto;
+    background-color: #edf8ea;
 }
