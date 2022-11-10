@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SweetTooth.Data;
+using SweetTooth.Models;
 
 namespace SweetTooth.Controllers
 {
@@ -33,6 +34,30 @@ namespace SweetTooth.Controllers
             }
 
             return View(products);
+        }
+        //POST: Shop/AddTOCart
+        [HttpPost]
+        public IActionResult AddToCart(int ProductId, int Quantity) 
+        {
+            var product = _context.Products.Find(ProductId);
+            var price = product.Price;
+
+            //set random userId of cart Time
+            var UserId = "some-user";
+
+            //Create a new CartTime object
+            var cartItem = new CartItem { 
+                ProductId = ProductId,
+                Quantity = Quantity,
+                Price = price,
+                UserId = UserId
+            };
+
+            //save the cartitem object to the database
+            _context.CartItems.Add(cartItem);
+            _context.SaveChanges();
+
+            return RedirectToAction("Cart");
         }
     }
 }
