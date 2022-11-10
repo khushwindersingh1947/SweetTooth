@@ -43,7 +43,7 @@ namespace SweetTooth.Controllers
             var price = product.Price;
 
             //set random userId of cart Time
-            var UserId = "some-user";
+            var UserId = getUserId();
 
             //Create a new CartTime object
             var cartItem = new CartItem { 
@@ -58,6 +58,26 @@ namespace SweetTooth.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Cart");
+        }
+
+        //GetUserId() will return a unique userId
+        private string getUserId() {
+            if (HttpContext.Session.GetString("UserId") == null) {
+
+                var userId = "";
+                if (User.Identity.IsAuthenticated)
+                {
+                    //user has logged in
+                    userId = User.Identity.Name;
+                }
+                else { //user is anonymouse
+                    userId = Guid.NewGuid().ToString();
+                }
+
+                //store userId in the session variable
+                HttpContext.Session.SetString("UserId",userId);
+            }
+            return HttpContext.Session.GetString("UserId");
         }
     }
 }
