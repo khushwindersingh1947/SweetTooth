@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SweetTooth.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var config  = builder.Configuration;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -17,6 +18,26 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication()
+    .AddGoogle(options => {
+        //AccessViolationException Google Aith Section Of AppSettings .json
+        IConfigurationSection googleAuthNSection = config.GetSection("Authentication:Google");
+
+        // read google API key values from config section and set as options
+        options.ClientId = googleAuthNSection["ClientId"];
+        options.ClientSecret = googleAuthNSection["ClientSecret"];
+
+    }).AddFacebook(options => {
+
+        //AccessViolationException Google Aith Section Of AppSettings .json
+        IConfigurationSection facebookAuthNSection = config.GetSection("Authentication:Facebook");
+
+        // read google API key values from config section and set as options
+        options.ClientId = facebookAuthNSection["ClientId"];
+        options.ClientSecret = facebookAuthNSection["ClientSecret"];
+
+    });
 
 var app = builder.Build();
 

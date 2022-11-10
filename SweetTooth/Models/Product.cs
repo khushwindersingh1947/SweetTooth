@@ -22,6 +22,7 @@ namespace SweetTooth.Models
         public int CategoryId { get; set; }
         public Category? Category { get; set; } 
 
+
         //1 product can be in many cartItems
         public List<CartItem>? CartItems { get; set; }
 
