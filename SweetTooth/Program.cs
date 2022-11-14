@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SweetTooth.Data;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var config  = builder.Configuration;
@@ -39,7 +40,7 @@ builder.Services.AddAuthentication()
 
     });
 
-builder.Services.AddAuthentication();
+builder.Services.AddSession();
 
 
 var app = builder.Build();
@@ -56,6 +57,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
