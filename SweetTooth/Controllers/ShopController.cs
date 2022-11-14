@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SweetTooth.Data;
 using SweetTooth.Models;
 
@@ -40,23 +41,58 @@ namespace SweetTooth.Controllers
         public IActionResult AddToCart(int ProductId, int Quantity) 
         {
             var product = _context.Products.Find(ProductId);
+
             var price = product.Price;
 
             //set random userId of cart Time
-            var UserId = getUserId();
+            var userId = getUserId();
 
-            //Create a new CartTime object
-            var cartItem = new CartItem { 
-                ProductId = ProductId,
-                Quantity = Quantity,
-                Price = price,
-                UserId = UserId
-            };
+            //check if item already exists in the cart by checking the CartItems table
+            //for userid and productId
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.ProductId == ProductId && c.UserId == userId);
+
+            //the item is already in the database
+            if (cartItem != null)
+            {
+                cartItem.Quantity += Quantity;
+                _context.CartItems.Update(cartItem);
+            }
+            else { 
+
+                //Create a new CartTime object
+                cartItem = new CartItem { 
+                    ProductId = ProductId,
+                    Quantity = Quantity,
+                    Price = price,
+                    UserId = userId
+                };
+                _context.CartItems.Add(cartItem);
+            }
 
             //save the cartitem object to the database
-            _context.CartItems.Add(cartItem);
             _context.SaveChanges();
 
+            return RedirectToAction("Cart");
+        }
+
+        //Get: /Shop/Cart
+        public IActionResult Cart() {
+            //get userid from session
+            var userId = HttpContext.Session.GetString("UserId");
+
+            //get cartItems for that userID
+            var cartItems = _context.CartItems
+                                        .Include(c => c.Product)
+                                        .Where(c => c.UserId == userId)
+                                        .ToList();
+            return View(cartItems);
+        }
+
+        //Shop/RemoveFromCart
+        public IActionResult RemoveFromCart(int id) {
+            var cartItem = _context.CartItems.Find(id);
+            _context.CartItems.Remove(cartItem);
+            _context.SaveChanges();
             return RedirectToAction("Cart");
         }
 
