@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SweetTooth.Data;
 using SweetTooth.Models;
@@ -21,7 +22,7 @@ namespace SweetTooth.Controllers
             return View(categories);
         }
 
-        public IActionResult ShopByCategory(int id) 
+        public IActionResult ShopByCategory(int id)
         {
             //get list of products for the specified categoryId
             //_context - connects us to the database
@@ -30,7 +31,7 @@ namespace SweetTooth.Controllers
                                             .OrderBy(p => p.Name)
                                             .ToList();
 
-            if (products == null) { 
+            if (products == null) {
                 return NotFound();
             }
 
@@ -38,7 +39,7 @@ namespace SweetTooth.Controllers
         }
         //POST: Shop/AddTOCart
         [HttpPost]
-        public IActionResult AddToCart(int ProductId, int Quantity) 
+        public IActionResult AddToCart(int ProductId, int Quantity)
         {
             var product = _context.Products.Find(ProductId);
 
@@ -57,10 +58,10 @@ namespace SweetTooth.Controllers
                 cartItem.Quantity += Quantity;
                 _context.CartItems.Update(cartItem);
             }
-            else { 
+            else {
 
                 //Create a new CartTime object
-                cartItem = new CartItem { 
+                cartItem = new CartItem {
                     ProductId = ProductId,
                     Quantity = Quantity,
                     Price = price,
@@ -111,9 +112,14 @@ namespace SweetTooth.Controllers
                 }
 
                 //store userId in the session variable
-                HttpContext.Session.SetString("UserId",userId);
+                HttpContext.Session.SetString("UserId", userId);
             }
             return HttpContext.Session.GetString("UserId");
+        }
+
+        [Authorize]
+        public IActionResult Checkout() {
+            return View();
         }
     }
 }

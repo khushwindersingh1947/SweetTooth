@@ -11,7 +11,6 @@ using SweetTooth.Models;
 
 namespace SweetTooth.Controllers
 {
-
     [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
@@ -96,7 +95,6 @@ namespace SweetTooth.Controllers
                 Image.CopyTo(stream);
             }
             return fileName;
-
         }
 
         // GET: Products/Edit/5
@@ -196,3 +194,10 @@ namespace SweetTooth.Controllers
         }
     }
 }
+
+
+
+
+
+
+
