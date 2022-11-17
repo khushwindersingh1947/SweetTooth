@@ -35,10 +35,14 @@
                                 <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                             </li>
                         }
-
-                        
+    
                     </ul>
                     <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Shop" asp-action="Cart">Cart</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

@@ -117,9 +117,29 @@ namespace SweetTooth.Controllers
             return HttpContext.Session.GetString("UserId");
         }
 
+        //GET: /Shop/Controller
         [Authorize]
         public IActionResult Checkout() {
+
             return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone")] Order order) 
+        { 
+            order.OrderDate = DateTime.Now;
+            order.UserId = getUserId();
+            order.Total =  (from c in _context.CartItems where c.UserId == order.UserId
+                            select c.Quantity * c.Price).Sum();
+
+            //save order to the session so we can keep it in memory
+            //once payment gets completed with a 3rd party platform
+            HttpContext.Session.SetObject("Order", order);
+
+            return RedirectToAction("Payment");
+
+
         }
     }
 }
